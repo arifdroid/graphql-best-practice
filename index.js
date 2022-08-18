@@ -23,25 +23,19 @@ const typeDefs = gql`
 
   type ManualGroup{    
     Image
-    [GroupMembership]   # this is the reference connection , we dont need reference , we need the actual results 
+    [Car] # return data of car directly instead
   }
   
   type AutomaticGroup{    
     Image
-    [GroupMembership]    
+    [Car] # return data of car directly instead
     [AutomaticGroupFeatures]    
   }
 
   type AutomaticGroupFeatures{    
   }
 
-  # to handle table relationship, 
-  type GroupMembership{  # RULE 2 , is this type reallly usefull for our application
-    Group
-    Car
-    
-
-  }
+  #remove GroupMembership
 
 
 
