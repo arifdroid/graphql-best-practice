@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 13  : Prefix mutation names with the object they are mutating for alphabetical grouping
+// RULE 14  : Structure mutation inputs to reduce duplication, even if this requires relaxing requiredness constraints on certain fields
 // explain  :  
 //          : 
 //          : 
@@ -15,12 +15,7 @@ const typeDefs = gql`
     id: ID!
     color: String!
     make: String!
-  }
-
-  # common convention
-
-  # group<Action>
-  # <action> Group
+  }  
 
   type Mutation{
     
@@ -30,14 +25,24 @@ const typeDefs = gql`
     groupAddCars(groupId: ID!, carId:ID!)
     groupRemoveCars(groupId: ID!, carId:ID!)
     
+    #but now we have duplication groupCreate and groupUpdate
     groupCreate(
-      name: String!
-      image: ImageInput!
-      description: String!
-      featureSet: GroupFeatureFields
+      groupInput: GroupInput! #this is relaxing the required fields, but this avoid code duplication
     )
-    groupUpdate
+
+    #for update , most are nullable
+    groupUpdate(
+      groupID: ID!
+      groupInput: GroupInput!
+    )
     
+  }
+
+  input GroupInput{    
+      name: String
+      image: ImageInput
+      description: String
+      featureSet: GroupFeatureFields
   }
 
   input ImageInput{
