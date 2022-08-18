@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 8   : Choose field names based on what make sense not based on implementation
+// RULE 9   : Use Enums for fields which can only take a specific set of values
 // explain  :  
 //          : 
 //          : 
@@ -38,8 +38,17 @@ const typeDefs = gql`
     applyFeatureSeparately: Boolean! 
   }
 
+  # we only have a set number of features, we should only able to pick one of the many features, we should use enum values
   type GroupFeatures{    
-    feature: String
+    feature: String!
+  }
+
+  enum GroupFeatureFields{
+      INCLINE_ENGINE
+      FOUR_CYLINDER_ENGINE
+      TWIN_CYLINDER_ENGINE
+      RED_PAINT
+      BLACK_PAINT
   }
 
 `;
