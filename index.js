@@ -1,7 +1,10 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 2   : Never expose implementation details
-// explain  : 
+// RULE 3   : Design your API around your business domain
+// explain  : the end users dont car how cars get into a group, be it manual or automatic based on the features
+//          : they just care, if they click on this, i should see a group of related cars
+//          : thus type ManualGroup and AutomaticGroup expose implementation details and not necessary from user or business perspective
+//          : so we remove both Manual And Auto Group, merge into one
 
 const typeDefs = gql`
   type Query {
@@ -14,30 +17,16 @@ const typeDefs = gql`
     make: String!
   }
 
-  type Group{
-    id: ID!
-    name: String!
-    imageId: ID!
-    bodyHtml: String!
-  }
+  # for manual group, just supply empty array into GroupFeatures
 
-  type ManualGroup{    
-    Image
-    [Car] # return data of car directly instead
-  }
-  
   type AutomaticGroup{    
     Image
-    [Car] # return data of car directly instead
-    [AutomaticGroupFeatures]    
+    [Car] 
+    [GroupFeatures]    
   }
 
-  type AutomaticGroupFeatures{    
+  type GroupFeatures{    
   }
-
-  #remove GroupMembership
-
-
 
 `;
 
