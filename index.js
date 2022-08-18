@@ -1,13 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// manual group is the one we manually group it together
-// automatic group is automatically added based on features we specified
-//right now have only 1 group, slit to 2
-//naive approach
-//now many to many relationship
-
-// RULE 1   : Start with high level view of the objects and their relationships before deal with specific fields
-// explain  : this is the high level overview
+// RULE 2   : Never expose implementation details
+// explain  : 
 
 const typeDefs = gql`
   type Query {
@@ -27,40 +21,22 @@ const typeDefs = gql`
     bodyHtml: String!
   }
 
-  type ManualGroup{
-    # id: ID!
-    # name: String!
-    # imageId: ID!
-    # bodyHtml: String!
-    # these are all related to Image
+  type ManualGroup{    
     Image
-    [GroupMembership]
-    # memberships: [GroupMembership!]!
+    [GroupMembership]   # this is the reference connection , we dont need reference , we need the actual results 
   }
   
-  type AutomaticGroup{
-    # id: ID!
-    # name: String!
-    # imageId: ID!
-    # bodyHtml: String!
-    # memberships: [GroupMembership!]!
+  type AutomaticGroup{    
     Image
-    [GroupMembership]
-    # feature: [AutomaticGroupFeatures!]!
-    [AutomaticGroupFeatures]
-    # applyFeaturesSeparately: Boolean!
+    [GroupMembership]    
+    [AutomaticGroupFeatures]    
   }
 
-  type AutomaticGroupFeatures{
-    # column: String!  #no need to specify any fields yet
+  type AutomaticGroupFeatures{    
   }
 
   # to handle table relationship, 
-
-  type GroupMembership{
-    # groupId: ID!
-    # carId: ID!
-
+  type GroupMembership{  # RULE 2 , is this type reallly usefull for our application
     Group
     Car
     
