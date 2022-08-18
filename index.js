@@ -19,7 +19,7 @@ const typeDefs = gql`
 
   # for manual group, just supply empty array into GroupFeatures
 
-  type AutomaticGroup{    
+  type Group{    
     Image
     [Car] 
     [GroupFeatures]    
