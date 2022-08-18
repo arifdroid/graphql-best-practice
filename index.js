@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 6   : Always check whether list fields should be paginated or not
+// RULE 7   : Always use object references instead of ID fields
 // explain  : 
 //          : 
 //          : 
@@ -20,15 +20,19 @@ const typeDefs = gql`
   type Group{    
     id: ID!
     featureSet: GroupFeaturesSet 
-    # cars: [Car!]! #this is problematic since we might return thousands of results, very hard to sort in FE, no point send all at once, useless
     cars (skip: Int! , take: Int!): [Car!]! 
     name: String!
-    imageId: ID!
+    # imageId: ID!  #pretty useless from client side, to get the imageId , we just want the image itself. 
+    # should never refer to foreign ID
+    image: Image!
     bodyHtml: String!
     
   }
 
-  #rule 5
+  type Image{
+    id: ID!
+    url: String!
+  }
 
   type GroupFeaturesSet{
     features: [GroupFeatures!]! 
