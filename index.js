@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 7   : Always use object references instead of ID fields
-// explain  : 
+// RULE 8   : Choose field names based on what make sense not based on implementation
+// explain  :  
 //          : 
 //          : 
 //          : 
@@ -21,11 +21,10 @@ const typeDefs = gql`
     id: ID!
     featureSet: GroupFeaturesSet 
     cars (skip: Int! , take: Int!): [Car!]! 
-    name: String!
-    # imageId: ID!  #pretty useless from client side, to get the imageId , we just want the image itself. 
-    # should never refer to foreign ID
+    name: String!    
     image: Image!
-    bodyHtml: String!
+    # bodyHtml: String!  #the name of the fields weird, 
+    description: String!
     
   }
 
