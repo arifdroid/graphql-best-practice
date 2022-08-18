@@ -30,6 +30,7 @@ const typeDefs = gql`
     name: String!
     imageId: ID!
     bodyHtml: String!
+    memberships: [GroupMembership!]!
   }
   
   type AutomaticGroup{
@@ -43,7 +44,15 @@ const typeDefs = gql`
 
   type AutomaticGroupFeatures{
     column: String!
-    
+  }
+
+  # to handle table relationship, 
+
+  type GroupMembership{
+    groupId: ID!
+    carId: ID!
+    memberships: [GroupMembership!]!
+
   }
 
 
