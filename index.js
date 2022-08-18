@@ -1,8 +1,8 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 4   : It's easier to add fields than to remove them
-// explain  : remove can lead to breaking changes
-//          : that's why important to check fields and type in schema first is it really necessary
+// RULE 5   : Group closely related fields together into their sub object
+// explain  : 
+//          : 
 //          : 
 //          : 
 
@@ -16,16 +16,24 @@ const typeDefs = gql`
     color: String!
     make: String!
   }
-  
+
   type Group{    
     id: ID!
-    features: [GroupFeatures!]!
-    applyFeatureSeparately: Boolean!
+    featureSet: GroupFeaturesSet # nullable to handle manual group
     cars: [Car!]!
     name: String!
     imageId: ID!
     bodyHtml: String!
     
+  }
+
+  #rule 5
+
+  type GroupFeaturesSet{
+
+    features: [GroupFeatures!]! #works fine for automatic group, but what about manual group, when we supply empty arrays
+    applyFeatureSeparately: Boolean! # problem for manual group, since we dont apply anything. 
+
   }
 
   type GroupFeatures{    
