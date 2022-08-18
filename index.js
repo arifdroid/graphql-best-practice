@@ -1,10 +1,10 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 3   : Design your API around your business domain
-// explain  : the end users dont car how cars get into a group, be it manual or automatic based on the features
-//          : they just care, if they click on this, i should see a group of related cars
-//          : thus type ManualGroup and AutomaticGroup expose implementation details and not necessary from user or business perspective
-//          : so we remove both Manual And Auto Group, merge into one
+// RULE 4   : It's easier to add fields than to remove them
+// explain  : remove can lead to breaking changes
+//          : that's why important to check fields and type in schema first is it really necessary
+//          : 
+//          : 
 
 const typeDefs = gql`
   type Query {
@@ -16,16 +16,20 @@ const typeDefs = gql`
     color: String!
     make: String!
   }
-
-  # for manual group, just supply empty array into GroupFeatures
-
-  type AutomaticGroup{    
-    Image
-    [Car] 
-    [GroupFeatures]    
+  
+  type Group{    
+    id: ID!
+    features: [GroupFeatures!]!
+    applyFeatureSeparately: Boolean!
+    cars: [Car!]!
+    name: String!
+    imageId: ID!
+    bodyHtml: String!
+    
   }
 
   type GroupFeatures{    
+    feature: String
   }
 
 `;
