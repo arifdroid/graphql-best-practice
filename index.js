@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 11  : Write separate mutation for a separate logical actions on a resource
+// RULE 12  : For a relationship mutation, always consider whether it would be useful to operate on multiple elements at once
 // explain  :  
 //          : 
 //          : 
@@ -17,7 +17,8 @@ const typeDefs = gql`
     make: String!
   }
 
-  # split up mutation based on their logical actions on a resource
+  # update mutation still relatively big , 
+  # for example, it is responsible fo adding a car to a group, remove a car from a group
 
   type Mutation{
     create
@@ -26,6 +27,10 @@ const typeDefs = gql`
     publish 
     unpublish
 
+    #we might want to add or remove one or multiple cars in mutation. 
+    addCars
+    removeCars
+  
   }
 
   type Group{    
