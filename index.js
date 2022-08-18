@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 9   : Use Enums for fields which can only take a specific set of values
-// explain  :  
+// RULE 10  :  Our API should provide business logic , not just the data
+// explain  :  how to implement brand new feature. how to tell a car is in this group or not
 //          : 
 //          : 
 //          : 
@@ -20,10 +20,12 @@ const typeDefs = gql`
   type Group{    
     id: ID!
     featureSet: GroupFeaturesSet 
-    cars (skip: Int! , take: Int!): [Car!]! 
+    cars (skip: Int! , take: Int!): [Car!]! # we could iterate over the results to find whether the car is in this group or not, but not efficient
+    # we having the client do a lot of business logic
+    # handle this business logic in our API
+    hasCar(id: ID!): Boolean!
     name: String!    
-    image: Image!
-    # bodyHtml: String!  #the name of the fields weird, 
+    image: Image!    
     description: String!
     
   }
@@ -38,9 +40,9 @@ const typeDefs = gql`
     applyFeatureSeparately: Boolean! 
   }
 
-  # we only have a set number of features, we should only able to pick one of the many features, we should use enum values
+  
   type GroupFeatures{    
-    feature: String!
+    feature: [GroupFeatureFields!]
   }
 
   enum GroupFeatureFields{
