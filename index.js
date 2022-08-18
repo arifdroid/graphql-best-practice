@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 10  :  Our API should provide business logic , not just the data
-// explain  :  how to implement brand new feature. how to tell a car is in this group or not
+// RULE 11  : Write separate mutation for a separate logical actions on a resource
+// explain  :  
 //          : 
 //          : 
 //          : 
@@ -17,12 +17,21 @@ const typeDefs = gql`
     make: String!
   }
 
+  # split up mutation based on their logical actions on a resource
+
+  type Mutation{
+    create
+    delete
+    update
+    publish 
+    unpublish
+
+  }
+
   type Group{    
     id: ID!
     featureSet: GroupFeaturesSet 
-    cars (skip: Int! , take: Int!): [Car!]! # we could iterate over the results to find whether the car is in this group or not, but not efficient
-    # we having the client do a lot of business logic
-    # handle this business logic in our API
+    cars (skip: Int! , take: Int!): [Car!]!
     hasCar(id: ID!): Boolean!
     name: String!    
     image: Image!    
