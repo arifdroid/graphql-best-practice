@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 12  : For a relationship mutation, always consider whether it would be useful to operate on multiple elements at once
+// RULE 13  : Prefix mutation names with the object they are mutating for alphabetical grouping
 // explain  :  
 //          : 
 //          : 
@@ -17,20 +17,31 @@ const typeDefs = gql`
     make: String!
   }
 
-  # update mutation still relatively big , 
-  # for example, it is responsible fo adding a car to a group, remove a car from a group
+  # common convention
+
+  # group<Action>
+  # <action> Group
 
   type Mutation{
-    create
-    delete
-    update
-    publish 
-    unpublish
+    
+    groupDelete(groupId: ID!)
+    groupPublish(groupId: ID!)
+    groupUnpublish(groupId: ID!)
+    groupAddCars(groupId: ID!, carId:ID!)
+    groupRemoveCars(groupId: ID!, carId:ID!)
+    
+    groupCreate(
+      name: String!
+      image: ImageInput!
+      description: String!
+      featureSet: GroupFeatureFields
+    )
+    groupUpdate
+    
+  }
 
-    #we might want to add or remove one or multiple cars in mutation. 
-    addCars
-    removeCars
-  
+  input ImageInput{
+    url: String!
   }
 
   type Group{    
