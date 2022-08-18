@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 5   : Group closely related fields together into their sub object
+// RULE 6   : Always check whether list fields should be paginated or not
 // explain  : 
 //          : 
 //          : 
@@ -19,8 +19,9 @@ const typeDefs = gql`
 
   type Group{    
     id: ID!
-    featureSet: GroupFeaturesSet # nullable to handle manual group
-    cars: [Car!]!
+    featureSet: GroupFeaturesSet 
+    # cars: [Car!]! #this is problematic since we might return thousands of results, very hard to sort in FE, no point send all at once, useless
+    cars (skip: Int! , take: Int!): [Car!]! 
     name: String!
     imageId: ID!
     bodyHtml: String!
@@ -30,10 +31,8 @@ const typeDefs = gql`
   #rule 5
 
   type GroupFeaturesSet{
-
-    features: [GroupFeatures!]! #works fine for automatic group, but what about manual group, when we supply empty arrays
-    applyFeatureSeparately: Boolean! # problem for manual group, since we dont apply anything. 
-
+    features: [GroupFeatures!]! 
+    applyFeatureSeparately: Boolean! 
   }
 
   type GroupFeatures{    
