@@ -6,6 +6,8 @@ const { ApolloServer, gql } = require("apollo-server");
 //naive approach
 //now many to many relationship
 
+// RULE 1   : Start with high level view of the objects and their relationships before deal with specific fields
+// explain  : this is the high level overview
 
 const typeDefs = gql`
   type Query {
@@ -26,32 +28,42 @@ const typeDefs = gql`
   }
 
   type ManualGroup{
-    id: ID!
-    name: String!
-    imageId: ID!
-    bodyHtml: String!
-    memberships: [GroupMembership!]!
+    # id: ID!
+    # name: String!
+    # imageId: ID!
+    # bodyHtml: String!
+    # these are all related to Image
+    Image
+    [GroupMembership]
+    # memberships: [GroupMembership!]!
   }
   
   type AutomaticGroup{
-    id: ID!
-    name: String!
-    imageId: ID!
-    bodyHtml: String!
-    feature: [AutomaticGroupFeatures!]!
-    applyFeaturesSeparately: Boolean!
+    # id: ID!
+    # name: String!
+    # imageId: ID!
+    # bodyHtml: String!
+    # memberships: [GroupMembership!]!
+    Image
+    [GroupMembership]
+    # feature: [AutomaticGroupFeatures!]!
+    [AutomaticGroupFeatures]
+    # applyFeaturesSeparately: Boolean!
   }
 
   type AutomaticGroupFeatures{
-    column: String!
+    # column: String!  #no need to specify any fields yet
   }
 
   # to handle table relationship, 
 
   type GroupMembership{
-    groupId: ID!
-    carId: ID!
-    memberships: [GroupMembership!]!
+    # groupId: ID!
+    # carId: ID!
+
+    Group
+    Car
+    
 
   }
 
