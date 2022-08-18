@@ -1,6 +1,6 @@
 const { ApolloServer, gql } = require("apollo-server");
 
-// RULE 14  : Structure mutation inputs to reduce duplication, even if this requires relaxing requiredness constraints on certain fields
+// RULE 15  : Mutation should provide user/business level errors via a userErrors field on the mutation payload
 // explain  :  
 //          : 
 //          : 
@@ -25,17 +25,31 @@ const typeDefs = gql`
     groupAddCars(groupId: ID!, carId:ID!)
     groupRemoveCars(groupId: ID!, carId:ID!)
     
-    #but now we have duplication groupCreate and groupUpdate
+    
     groupCreate(
-      groupInput: GroupInput! #this is relaxing the required fields, but this avoid code duplication
-    )
+      groupInput: GroupInput! 
+    ): 
 
-    #for update , most are nullable
+    # groupUpdate(
+    #   groupID: ID!
+    #   groupInput: GroupInput!
+    # ): Group # make it nullable , since mutation might not return error or group, we also want to return the error
+
     groupUpdate(
       groupID: ID!
       groupInput: GroupInput!
-    )
+    ): GroupUpdatePayload
     
+  }
+
+  type GroupUpdatePayload{
+    group: Group
+    userErrors:[UserErrors!]!
+  }
+
+  type UserErrors{
+    message: String!
+    field: [String!]!
   }
 
   input GroupInput{    
